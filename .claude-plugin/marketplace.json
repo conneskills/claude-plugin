@@ -1,0 +1,17 @@
+{
+  "name": "conneskills",
+  "description": "Conneskills integrations for Claude",
+  "owner": {
+    "name": "Conneskills"
+  },
+  "plugins": [
+    {
+      "name": "conneskills",
+      "source": "./",
+      "displayName": "Conneskills",
+      "description": "Company knowledge bases and live data connections via the Conneskills plugin MCP endpoint (OAuth per employee).",
+      "version": "0.1.0",
+      "defaultEnabled": true
+    }
+  ]
+}
