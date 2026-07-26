@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "conneskills-kbs": {
+      "type": "http",
+      "url": "https://app.conneskills.com/api/mcp/kbs"
+    },
+    "conneskills-code": {
+      "type": "http",
+      "url": "https://app.conneskills.com/api/mcp/code"
+    },
+    "conneskills-memory": {
+      "type": "http",
+      "url": "https://app.conneskills.com/api/mcp/memory"
+    },
+    "conneskills-planning": {
+      "type": "http",
+      "url": "https://app.conneskills.com/api/mcp/planning"
+    }
+  }
+}

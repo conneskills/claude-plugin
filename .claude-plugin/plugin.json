@@ -1,18 +1,16 @@
 {
   "name": "conneskills",
   "displayName": "Conneskills",
-  "version": "0.1.0",
-  "description": "Connect Claude to your company's governed context in Conneskills: knowledge bases, live databases, documents, Jira, and code — with per-employee OAuth, team-scoped permissions, and audit.",
+  "version": "1.0.0",
+  "description": "Connect Claude to governed company knowledge, code intelligence, memory, and planning through Conneskills.",
   "author": {
-    "name": "Conneskills"
+    "name": "Conneskills",
+    "url": "https://conneskills.com"
   },
   "homepage": "https://conneskills.com",
+  "repository": "https://github.com/conneskills/claude-plugin",
   "license": "UNLICENSED",
-  "keywords": ["rag", "knowledge-base", "mcp", "company-brain", "database"],
-  "mcpServers": {
-    "conneskills": {
-      "type": "http",
-      "url": "${CONNESKILLS_URL:-https://app.conneskills.com}/api/mcp/plugin"
-    }
-  }
+  "keywords": ["mcp", "knowledge-base", "code-intelligence", "memory", "planning"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
 }

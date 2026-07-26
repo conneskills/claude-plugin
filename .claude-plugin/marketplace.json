@@ -9,8 +9,8 @@
       "name": "conneskills",
       "source": "./",
       "displayName": "Conneskills",
-      "description": "Company knowledge bases and live data connections via the Conneskills plugin MCP endpoint (OAuth per employee).",
-      "version": "0.1.0",
+      "description": "Governed company knowledge, code intelligence, memory, and planning through four OAuth MCP resources.",
+      "version": "1.0.0",
       "defaultEnabled": true
     }
   ]

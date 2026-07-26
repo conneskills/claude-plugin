@@ -1,0 +1,11 @@
+interface:
+  display_name: "Conneskills Code"
+  short_description: "Explore indexed code safely"
+  default_prompt: "Use $conneskills-code to inspect architecture and trace code through the indexed graph."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "conneskills-code"
+      description: "Conneskills indexed code graph"
+      transport: "streamable_http"
+      url: "https://app.conneskills.com/api/mcp/code"

@@ -1,80 +1,52 @@
-# Conneskills — Plugin de Claude
+# Conneskills — plugin para Claude Code
 
-Conecta Claude (claude.ai, Claude Code o la Messages API) al contexto gobernado de tu
-empresa en Conneskills: knowledge bases, bases de datos conectadas, documentos, Jira y
-código — con OAuth por empleado, permisos por equipo, auditoría y medición de consumo.
+Conecta Claude Code con cuatro superficies gobernadas de Conneskills:
+**Conneskills KBS**, **Conneskills Code**, **Conneskills Memory** y
+**Conneskills Planning**. Cada superficie usa un recurso MCP y consentimiento
+OAuth independientes.
 
-**El punto:** tu empresa ya usa Anthropic. No tiene que dejar de usarlo — Conneskills se
-enchufa como una fuente de contexto más, en 2 minutos.
+## Instalación
 
-Un solo endpoint sirve las tres superficies: `https://<tu-host>/api/mcp/plugin`.
-
----
-
-## 1. Claude Code (este plugin)
-
-```bash
+```text
 /plugin marketplace add conneskills/claude-plugin
 /plugin install conneskills@conneskills
 ```
 
-Al primer uso, Claude Code abre el navegador para el login OAuth de Conneskills
-(el usuario aprueba en la página de consentimiento; sin API keys que copiar).
-Autenticación manual si hiciera falta: `/mcp` → conneskills → Authenticate.
+Al primer uso, autentica cada recurso desde `/mcp`. El servidor publica
+Protected Resource Metadata y registra clientes dinámicamente; no hay API keys
+que copiar.
 
-Alternativa sin marketplace:
+## Recursos incluidos
+
+| Recurso | URL | Uso |
+|---|---|---|
+| Conneskills KBS | `https://app.conneskills.com/api/mcp/kbs` | KBs y conectores gobernados |
+| Conneskills Code | `https://app.conneskills.com/api/mcp/code` | Índice y grafo de código |
+| Conneskills Memory | `https://app.conneskills.com/api/mcp/memory` | Memoria e intenciones |
+| Conneskills Planning | `https://app.conneskills.com/api/mcp/planning` | Planes y gobernanza |
+
+Los permisos seguros por defecto no incluyen escritura de código, borrado de
+memoria ni gestión de ADRs. La disponibilidad final de cada tool depende del
+workspace y de los scopes concedidos.
+
+## Uso sin marketplace
 
 ```bash
-claude mcp add --transport http conneskills https://<tu-host>/api/mcp/plugin
+claude mcp add --transport http conneskills-kbs https://app.conneskills.com/api/mcp/kbs
+claude mcp add --transport http conneskills-code https://app.conneskills.com/api/mcp/code
+claude mcp add --transport http conneskills-memory https://app.conneskills.com/api/mcp/memory
+claude mcp add --transport http conneskills-planning https://app.conneskills.com/api/mcp/planning
 ```
 
-## 2. claude.ai (Team / Enterprise) — custom connector
+Para preguntas sobre datos, la skill de KBS consulta primero el conocimiento
+indexado. Sólo usa el conector en vivo cuando se necesitan valores actuales o
+una consulta estructurada que el índice no puede resolver.
 
-No requiere artefacto: Settings → Connectors → **Add custom connector** → pegar
-`https://<tu-host>/api/mcp/plugin`. El registro de cliente OAuth es automático (DCR);
-cada empleado autoriza con SU cuenta de Conneskills y ve solo lo que su scope permite.
+## Compatibilidad
 
-## 3. Messages API (agentes propios del cliente)
+`/api/mcp/plugin` continúa disponible como alias heredado de KBS, pero no
+incluye Code, Memory ni Planning y no debe usarse en instalaciones nuevas.
 
-```json
-{
-  "mcp_servers": [{
-    "type": "url",
-    "url": "https://<tu-host>/api/mcp/plugin",
-    "name": "conneskills",
-    "authorization_token": "csk_live_..."
-  }]
-}
-```
-
----
-
-## Qué obtiene Claude
-
-| Capability | Tools | Scope OAuth |
-|---|---|---|
-| Knowledge bases | `list_knowledge_bases`, `search_knowledge_base` | `kb:query` |
-| Conexiones en vivo | `list_active_connections`, `database_*` (read-only), `document_*`, `issue_*`, `code_*` | `connectors:read` |
-
-Todo con: RLS multi-tenant, scope personal por empleado (workspace ∩ equipos ∩ personal),
-atribución de gasto `user:<id>`, rate limiting y ledger de créditos por tool call.
-
-## Requisitos del lado Conneskills
-
-- Feature flag `integrations.claude_plugin` activo para el workspace (gate por plan).
-- Plugin habilitado y capabilities seleccionadas en la config del workspace
-  (`workspace_plugin_configs`).
-- `PLUGIN_PUBLIC_URL` apuntando al origen público https (en dev: el túnel
-  cloudflared/ngrok). La página de consentimiento corre en `APP_BASE_URL`.
-
-## Estructura
-
-```
-.claude-plugin/plugin.json        # manifiesto del plugin (incluye el MCP server remoto)
-.claude-plugin/marketplace.json   # catálogo para /plugin marketplace add
-skills/conneskills/SKILL.md       # enseña a Claude el workflow KB → datos en vivo
-```
-
-> Nota de distribución: para instalarlo con `/plugin marketplace add conneskills/claude-plugin`,
-> este directorio se publica como repo público `conneskills/claude-plugin` (o se agrega por
-> ruta git del monorepo). El contenido es estático — no hay build.
+El workspace debe tener activo temporalmente el feature flag
+`integrations.claude_plugin` para KBS. El nombre del flag se mantiene por
+compatibilidad y se generalizará en una entrega posterior.

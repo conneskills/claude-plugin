@@ -1,0 +1,11 @@
+interface:
+  display_name: "Conneskills KBS"
+  short_description: "Search governed company knowledge"
+  default_prompt: "Use $conneskills-kbs to find grounded answers in our company knowledge bases."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "conneskills-kbs"
+      description: "Conneskills KBS and governed connectors"
+      transport: "streamable_http"
+      url: "https://app.conneskills.com/api/mcp/kbs"

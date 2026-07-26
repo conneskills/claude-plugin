@@ -1,0 +1,11 @@
+interface:
+  display_name: "Conneskills Memory"
+  short_description: "Recall and maintain agent memory"
+  default_prompt: "Use $conneskills-memory to retrieve relevant memories before continuing this task."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "conneskills-memory"
+      description: "Conneskills governed memory"
+      transport: "streamable_http"
+      url: "https://app.conneskills.com/api/mcp/memory"
