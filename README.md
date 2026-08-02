@@ -21,9 +21,9 @@ que copiar.
 | Recurso | URL | Uso |
 |---|---|---|
 | Conneskills KBS | `https://app.conneskills.com/api/mcp/kbs` | KBs y conectores gobernados |
-| Conneskills Code | `https://app.conneskills.com/api/mcp/code` | Índice y grafo de código |
-| Conneskills Memory | `https://app.conneskills.com/api/mcp/memory` | Memoria e intenciones |
-| Conneskills Planning | `https://app.conneskills.com/api/mcp/planning` | Planes y gobernanza |
+| Conneskills Code | `https://app.conneskills.com/api/mcp/brain/code` | Índice y grafo de código |
+| Conneskills Memory | `https://app.conneskills.com/api/mcp/brain/memory` | Memoria e intenciones |
+| Conneskills Planning | `https://app.conneskills.com/api/mcp/brain/planning` | Planes y gobernanza |
 
 Los permisos seguros por defecto no incluyen escritura de código, borrado de
 memoria ni gestión de ADRs. La disponibilidad final de cada tool depende del
@@ -33,9 +33,9 @@ workspace y de los scopes concedidos.
 
 ```bash
 claude mcp add --transport http conneskills-kbs https://app.conneskills.com/api/mcp/kbs
-claude mcp add --transport http conneskills-code https://app.conneskills.com/api/mcp/code
-claude mcp add --transport http conneskills-memory https://app.conneskills.com/api/mcp/memory
-claude mcp add --transport http conneskills-planning https://app.conneskills.com/api/mcp/planning
+claude mcp add --transport http conneskills-code https://app.conneskills.com/api/mcp/brain/code
+claude mcp add --transport http conneskills-memory https://app.conneskills.com/api/mcp/brain/memory
+claude mcp add --transport http conneskills-planning https://app.conneskills.com/api/mcp/brain/planning
 ```
 
 Para preguntas sobre datos, la skill de KBS consulta primero el conocimiento

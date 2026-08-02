@@ -6,15 +6,15 @@
     },
     "conneskills-code": {
       "type": "http",
-      "url": "https://app.conneskills.com/api/mcp/code"
+      "url": "https://app.conneskills.com/api/mcp/brain/code"
     },
     "conneskills-memory": {
       "type": "http",
-      "url": "https://app.conneskills.com/api/mcp/memory"
+      "url": "https://app.conneskills.com/api/mcp/brain/memory"
     },
     "conneskills-planning": {
       "type": "http",
-      "url": "https://app.conneskills.com/api/mcp/planning"
+      "url": "https://app.conneskills.com/api/mcp/brain/planning"
     }
   }
 }
