@@ -1,0 +1,11 @@
+interface:
+  display_name: "Conneskills Knowledge"
+  short_description: "Search governed company knowledge"
+  default_prompt: "Use $conneskills-knowledge to search the company's knowledge bases before answering from general knowledge."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "conneskills-knowledge"
+      description: "Conneskills governed knowledge bases"
+      transport: "streamable_http"
+      url: "https://app.conneskills.com/api/mcp/knowledge"

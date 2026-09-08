@@ -1,8 +1,8 @@
 {
   "name": "conneskills",
   "displayName": "Conneskills",
-  "version": "1.0.1",
-  "description": "Connect Claude to governed company knowledge, code intelligence, memory, and planning through Conneskills.",
+  "version": "2.0.0",
+  "description": "Connect Claude to governed company knowledge, live connector data, code intelligence, memory, and planning through Conneskills.",
   "author": {
     "name": "Conneskills",
     "url": "https://conneskills.com"
@@ -10,7 +10,14 @@
   "homepage": "https://conneskills.com",
   "repository": "https://github.com/conneskills/claude-plugin",
   "license": "UNLICENSED",
-  "keywords": ["mcp", "knowledge-base", "code-intelligence", "memory", "planning"],
+  "keywords": [
+    "mcp",
+    "knowledge-base",
+    "connectors",
+    "code-intelligence",
+    "memory",
+    "planning"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json"
 }

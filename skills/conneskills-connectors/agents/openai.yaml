@@ -1,0 +1,11 @@
+interface:
+  display_name: "Conneskills Connectors"
+  short_description: "Read live data from authorized connections"
+  default_prompt: "Use $conneskills-connectors to read current values from the workspace's connected databases, documents, issue trackers, repositories and BI datasets."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "conneskills-connectors"
+      description: "Conneskills live connector data"
+      transport: "streamable_http"
+      url: "https://app.conneskills.com/api/mcp/connectors"
