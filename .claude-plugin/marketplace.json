@@ -9,8 +9,8 @@
       "name": "conneskills",
       "source": "./",
       "displayName": "Conneskills",
-      "description": "Governed company knowledge, code intelligence, memory, and planning through four OAuth MCP resources.",
-      "version": "1.0.1",
+      "description": "Governed company knowledge, live connector data, code intelligence, memory, and planning through five OAuth MCP resources.",
+      "version": "2.0.0",
       "defaultEnabled": true
     }
   ]

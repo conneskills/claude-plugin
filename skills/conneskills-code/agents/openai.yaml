@@ -8,4 +8,4 @@ dependencies:
       value: "conneskills-code"
       description: "Conneskills indexed code graph"
       transport: "streamable_http"
-      url: "https://app.conneskills.com/api/mcp/brain/code"
+      url: "https://app.conneskills.com/api/mcp/code"

@@ -8,4 +8,4 @@ dependencies:
       value: "conneskills-planning"
       description: "Conneskills governed planning"
       transport: "streamable_http"
-      url: "https://app.conneskills.com/api/mcp/brain/planning"
+      url: "https://app.conneskills.com/api/mcp/planning"
