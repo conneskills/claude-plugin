@@ -1,7 +1,7 @@
 interface:
   display_name: "Conneskills Knowledge"
   short_description: "Search governed company knowledge"
-  default_prompt: "Use $conneskills-knowledge to search the company's knowledge bases before answering from general knowledge."
+  default_prompt: "Use $conneskills-knowledge to search company knowledge or inspect exact database structure from the indexed snapshot before any live read."
 dependencies:
   tools:
     - type: "mcp"

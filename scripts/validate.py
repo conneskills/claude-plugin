@@ -17,9 +17,36 @@ ROOT = Path(__file__).resolve().parent.parent
 FRONTMATTER = re.compile(r"^---\n(.*?)\n---\n", re.S)
 errors: list[str] = []
 
+EXPECTED_SERVERS = {
+    "conneskills-knowledge": "https://app.conneskills.com/api/mcp/knowledge",
+    "conneskills-connectors": "https://app.conneskills.com/api/mcp/connectors",
+    "conneskills-code": "https://app.conneskills.com/api/mcp/code",
+    "conneskills-memory": "https://app.conneskills.com/api/mcp/memory",
+    "conneskills-planning": "https://app.conneskills.com/api/mcp/planning",
+}
+INDEXED_DATABASE_SCHEMA_TOOLS = {
+    "database_list_schemas",
+    "database_list_tables",
+    "database_describe_table",
+}
+LIVE_DATABASE_TOOLS = {
+    "database_list_connections",
+    "database_count",
+    "database_select",
+    "database_aggregate",
+}
+
 
 def fail(msg: str) -> None:
     errors.append(msg)
+
+
+def read_required_text(rel: str) -> str:
+    try:
+        return (ROOT / rel).read_text()
+    except Exception as exc:  # noqa: BLE001
+        fail(f"{rel}: no se puede leer — {exc}")
+        return ""
 
 
 def load_yaml(text: str, where: str):
@@ -47,8 +74,16 @@ for rel in (".mcp.json", ".claude-plugin/plugin.json", ".claude-plugin/marketpla
         fail(f"{rel}: JSON inválido — {exc}")
 
 servers = set(manifests.get(".mcp.json", {}).get("mcpServers", {}))
+server_configs = manifests.get(".mcp.json", {}).get("mcpServers", {})
 plugin = manifests.get(".claude-plugin/plugin.json", {})
 market = manifests.get(".claude-plugin/marketplace.json", {})
+
+actual_servers = {name: config.get("url") for name, config in server_configs.items()}
+if actual_servers != EXPECTED_SERVERS:
+    fail(
+        "servidores MCP distintos del contrato canónico — "
+        f"esperado={EXPECTED_SERVERS!r}, actual={actual_servers!r}"
+    )
 
 # Una versión distinta entre los dos manifiestos hace que el marketplace ofrezca
 # una y el plugin declare otra, y el usuario no puede saber cuál tiene.
@@ -100,6 +135,30 @@ for d in skill_dirs:
 for name in sorted(servers):
     if not (ROOT / "skills" / name).is_dir():
         fail(f".mcp.json declara {name} sin skill que lo guíe en skills/{name}/")
+
+# Contrato DB: el esquema exacto pertenece a Knowledge y las operaciones sobre
+# filas actuales pertenecen a Connectors. Se comprueban las tablas de inventario,
+# no una frase concreta de la prosa, para que editar el estilo no rompa CI.
+knowledge_schema_reference = read_required_text(
+    "skills/conneskills-knowledge/references/database-schema.md"
+)
+connectors_reference = read_required_text(
+    "skills/conneskills-connectors/references/tool-families.md"
+)
+
+for tool in sorted(INDEXED_DATABASE_SCHEMA_TOOLS):
+    if f"| `{tool}` |" not in knowledge_schema_reference:
+        fail(f"Knowledge no contiene en su inventario la tool de esquema {tool}")
+    if f"| `{tool}` |" in connectors_reference:
+        fail(f"Connectors se atribuye indebidamente la tool de esquema {tool}")
+
+for tool in sorted(LIVE_DATABASE_TOOLS):
+    if f"| `{tool}` |" not in connectors_reference:
+        fail(f"Connectors no contiene en su inventario la operación DB viva {tool}")
+
+changelog = read_required_text("CHANGELOG.md")
+if f"## {plugin.get('version')}" not in changelog:
+    fail(f"CHANGELOG.md no contiene la versión publicada {plugin.get('version')}")
 
 if errors:
     print("\n".join(f"✗ {e}" for e in errors))

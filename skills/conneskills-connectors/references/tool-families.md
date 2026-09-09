@@ -15,15 +15,12 @@ family's `*_list_connections`).
 
 ## database — `connectors:database:read`
 
-Postgres and MySQL. Reads run in a READ ONLY transaction; arguments are
-structured, so there is no SQL string to compose.
+Reads run through the configured database connection with structured arguments;
+there is no SQL string to compose.
 
 | Tool | Purpose |
 |---|---|
 | `database_list_connections` | Database connections only. |
-| `database_list_schemas` | Schemas/databases in a connection. |
-| `database_list_tables` | Tables and views in a schema. |
-| `database_describe_table` | Columns, types, keys. Read this before selecting. |
 | `database_count` | Row count, with optional filters. The right tool for "how many". |
 | `database_aggregate` | `group_by` + aggregates. The right tool for totals and breakdowns. |
 | `database_select` | Rows, with columns, filters, `order_by`, `limit`, `offset`. |
@@ -35,8 +32,10 @@ Notes that save a wrong answer:
 - Filters and `group_by` are argument objects, not fragments of SQL text. If the
   question needs a join or a window function, no argument set expresses it — say
   what is missing instead of approximating with several selects.
-- Identifiers are case- and schema-sensitive. Take them from
-  `database_describe_table` rather than from the user's phrasing.
+- Identifiers are case- and schema-sensitive. Resolve them first with the
+  deterministic `database_list_schemas`, `database_list_tables` and
+  `database_describe_table` tools on `conneskills-knowledge`; they are
+  intentionally absent from this live surface.
 
 ## document — `connectors:document:read`
 

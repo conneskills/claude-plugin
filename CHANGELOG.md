@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.1
+
+### Esquema de base de datos determinista
+
+- `database_list_schemas`, `database_list_tables` y
+  `database_describe_table` se documentan como tools de **Knowledge**. Reciben
+  `kb_id`, leen exclusivamente el último snapshot indexado y nunca abren una
+  conexión a la base de datos viva.
+- La skill de Knowledge explica los campos de tamaño, relaciones, riesgo y
+  warnings que hay que revisar antes de preparar una consulta.
+- La skill y el inventario de Connectors dejan de atribuirse esas tres tools.
+  La familia DB viva queda formada por discovery, `database_count`,
+  `database_select` y `database_aggregate`.
+- El validador comprueba las cinco URIs canónicas y la propiedad de las tools de
+  base de datos para evitar que el contrato vuelva a divergir del servidor.
+
+No cambian las URLs ni los permisos respecto a `2.0.0`, por lo que esta
+actualización no requiere una nueva autorización OAuth.
+
 ## 2.0.0
 
 ### Nuevo: servidor Connectors
