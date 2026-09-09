@@ -1,6 +1,6 @@
 ---
 name: conneskills-knowledge
-description: Search the company's governed knowledge bases through Conneskills Knowledge — internal policies, procedures, documents, business definitions, indexed database schemas, Jira content and connected repositories. Use it whenever a question is about what this company knows, decided, documents or defines rather than about the public world, including which table or field holds a figure. Triggers on "what's our policy", "how do we do X here", "what does the doc say", "check the KB", "where is that documented", and Spanish "busca en la base de conocimiento", "qué sabemos de", "cuál es nuestra política", "dónde está documentado". Reach for it before answering from general knowledge and before querying any live system.
+description: Search the company's governed knowledge bases through Conneskills Knowledge — internal policies, procedures, documents, business definitions, Jira content, connected repositories, and exact database schema from the indexed snapshot. Use it whenever a question is about what this company knows, decided, documents or defines rather than about the public world, including tables, columns, relationships, indexes, sizes, risk or query warnings. Triggers on "what's our policy", "check the KB", "which table or field", "describe this table", and Spanish "busca en la base de conocimiento", "qué sabemos de", "cuál es nuestra política", "qué tablas hay", "describe esta tabla". Reach for it before answering from general knowledge and before querying any live system.
 ---
 
 # Conneskills Knowledge
@@ -32,18 +32,34 @@ not consulted, and the user may know of one you missed.
 
 ## Database and connector questions
 
-For anything about the company's data, search the index first even when the
-final answer needs a live figure. The indexed KB carries the schema *and* the
-business descriptions of tables and fields, which is how you find out that
-"revenue" lives in `facturacion.importe_neto` and not in a column called
-`revenue`. Guessing table and field names from the user's phrasing is the main
-way these answers go wrong.
+For a descriptive or business question, use `search_knowledge_base`. For an
+exact structural question, use the indexed database schema tools instead of
+semantic search:
+
+1. `database_list_schemas` with the ready database `kb_id`.
+2. `database_list_tables` with `kb_id` and `schema`; paginate with `limit` and
+   `offset` when `has_more` is true.
+3. `database_describe_table` with `kb_id`, `schema` and `table` for exact
+   columns, keys, indexes, relationships, constraints, triggers and warnings.
+
+These three tools read only the last KB snapshot. Their result declares
+`source: knowledge_base_index`, `deterministic: true` and
+`live_database_queried: false`; an error never falls back to the live database.
+Read `references/database-schema.md` whenever the task involves database
+structure or prepares a live query.
+
+Use the schema's business descriptions to map the user's language to real
+identifiers. Before any live read, inspect row-count accuracy, table and index
+size, `performance_risk`, relationships and ordered `warnings`; do not silently
+turn a warning about scans, locking, approximate counts or bloat into a safe
+query assumption.
 
 Once you know what to ask for and the user needs a current value, use the
 `conneskills-connectors` server — that is the canonical place for live reads.
-This server also registers connector tools for backwards compatibility, so you
-may see `database_*`, `document_*`, `issue_*`, `code_*` or `warehouse_*` here
-too; when both servers are present, prefer the Connectors ones.
+Knowledge may also expose live connector tools for backwards compatibility.
+When both servers are present, keep the boundary explicit: the three schema
+tools above belong here; live `database_count`, `database_select` and
+`database_aggregate` belong to Connectors.
 
 ## Reading the state of a KB honestly
 

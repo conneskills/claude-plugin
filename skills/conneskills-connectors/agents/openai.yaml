@@ -1,7 +1,7 @@
 interface:
   display_name: "Conneskills Connectors"
   short_description: "Read live data from authorized connections"
-  default_prompt: "Use $conneskills-connectors to read current values from the workspace's connected databases, documents, issue trackers, repositories and BI datasets."
+  default_prompt: "Use $conneskills-connectors to read current values after resolving database structure and warnings through $conneskills-knowledge."
 dependencies:
   tools:
     - type: "mcp"

@@ -1,6 +1,6 @@
 ---
 name: conneskills-connectors
-description: Read live data from the workspace's authorized connections through Conneskills Connectors — databases (Postgres/MySQL), documents (Drive/OneDrive/GitHub), issue trackers (Jira/GitHub), repositories and BI warehouses (Power BI). Use it whenever the answer depends on a system's CURRENT value rather than on indexed knowledge — row counts, totals, today's figures, open tickets, a file's contents now, a dataset measure. Triggers on "how many", "what's the current", "check the database", "look in Drive", "open tickets", "read that repo file", and Spanish "cuántos hay", "consulta la base de datos", "mira en Drive", "tickets abiertos", "el dato de hoy". Also use it when a KB search came back stale or without the precise figure asked for.
+description: Read current values from the workspace's authorized live connections through Conneskills Connectors — database rows and aggregates, documents, issue trackers, repositories and BI warehouses. Use it when the answer depends on what a connected system contains now, such as a count, total, today's figure, open tickets, current file contents or a dataset measure. Triggers on "how many", "what's the current", "check the database", "look in Drive", "open tickets", and Spanish "cuántos hay", "consulta la base de datos", "mira en Drive", "tickets abiertos", "el dato de hoy". Do not use it for database schema discovery; exact schemas, tables, columns, relationships, sizes, risk and warnings belong to Conneskills Knowledge's indexed snapshot.
 ---
 
 # Conneskills Connectors
@@ -21,21 +21,23 @@ Reach for `conneskills-knowledge` first for anything conceptual, definitional or
 descriptive — including *which* table or field holds a figure. Come here once you
 know what to ask for and need the current answer.
 
-The Knowledge server also exposes these same connector tools for backwards
-compatibility. When both servers are installed, prefer the ones from this
-server: it is the canonical Connectors resource, and keeping live access on one
-server makes what you did legible to the user.
+The Knowledge server may also expose live connector tools for backwards
+compatibility. When both servers are installed, use this server for live reads:
+it keeps the source boundary and its cost legible to the user. The exception is
+the indexed database schema trio, which belongs to Knowledge and is not exposed
+by Connectors.
 
 ## Workflow
 
 1. Call `list_active_connections` when you do not already know which
    connections exist. It groups them by family and gives you the connection IDs
    every other tool needs.
-2. Work down from structure to values. For a database that means
-   `database_list_schemas` → `database_list_tables` →
-   `database_describe_table` before you select anything: the column names and
-   types are what keep a query from silently returning the wrong thing.
-3. Ask the narrowest question that answers the user. `database_count` and
+2. For a database, resolve structure first through `conneskills-knowledge`.
+   `database_list_schemas`, `database_list_tables` and
+   `database_describe_table` are deterministic indexed tools; if they are not
+   available, report the missing Knowledge access rather than probing the live
+   source for schema.
+3. Ask the narrowest live question that answers the user. `database_count` and
    `database_aggregate` return an answer; `database_select` returns rows you
    then have to summarize. When the user wants a number, ask for the number.
 4. Report which connection and object you read, so the user can tell a live
@@ -74,6 +76,9 @@ around.
   the indexed copy without saying so.
 - Row limits truncate. If you selected with a limit and hit it, say the result
   is partial — an unqualified "there are 100" from a `LIMIT 100` is wrong.
+- The table names, columns, relationships and warnings used for a database read
+  came from the last indexed snapshot. Say when that snapshot may be stale; do
+  not imply that Connectors revalidated the schema live.
 - `warehouse_*` is the current prefix for BI tools. The older `powerbi_*` names
   still work during their deprecation window; if you only see those, use them
   and mention the connector is on the legacy naming.

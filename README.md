@@ -20,8 +20,8 @@ que copiar ni configurar.
 
 | Servidor | URL | Para qué |
 |---|---|---|
-| `conneskills-knowledge` | `https://app.conneskills.com/api/mcp/knowledge` | Conocimiento indexado del workspace, con citas |
-| `conneskills-connectors` | `https://app.conneskills.com/api/mcp/connectors` | Datos **vivos** de las conexiones autorizadas |
+| `conneskills-knowledge` | `https://app.conneskills.com/api/mcp/knowledge` | Conocimiento indexado y esquema DB determinista, con citas |
+| `conneskills-connectors` | `https://app.conneskills.com/api/mcp/connectors` | Valores **vivos** de las conexiones autorizadas |
 | `conneskills-code` | `https://app.conneskills.com/api/mcp/code` | Grafo de código: símbolos, relaciones, impacto |
 | `conneskills-memory` | `https://app.conneskills.com/api/mcp/memory` | Memoria a largo plazo e intenciones |
 | `conneskills-planning` | `https://app.conneskills.com/api/mcp/planning` | Planes gobernados, evidencia y gates |
@@ -30,14 +30,18 @@ que copiar ni configurar.
 
 Es la decisión que más cambia la calidad de una respuesta.
 
-- **Knowledge** responde *qué sabemos, cómo se hace, dónde está documentado* —
-  incluido **qué tabla o campo** guarda un dato. Es barato, citable y no toca
-  ningún sistema de producción.
-- **Connectors** responde *cuál es el valor ahora mismo*. Consulta la fuente en
-  vivo, así que es más lento, carga el sistema conectado y factura.
+- **Knowledge** responde *qué sabemos, cómo se hace, dónde está documentado* y
+  expone el esquema exacto de las bases de datos indexadas: tablas, columnas,
+  claves, relaciones, índices, tamaños, riesgo y warnings. Ese contrato es
+  determinista y nunca consulta la base de datos viva.
+- **Connectors** responde *cuál es el valor ahora mismo*. Para bases de datos
+  conserva únicamente las operaciones vivas de conexión, count, select y
+  aggregate; consultar la fuente es más lento, carga el sistema conectado y
+  factura.
 
-El orden que funciona es Knowledge primero para saber qué preguntar, Connectors
-después para el valor actual. Las skills incluidas ya lo aplican.
+El orden que funciona es Knowledge primero para resolver el esquema y entender
+los warnings; Connectors después, y solo si hace falta un valor actual. Las
+skills incluidas aplican esa separación explícitamente.
 
 ## Permisos
 
