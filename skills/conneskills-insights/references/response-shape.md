@@ -22,7 +22,8 @@
 | `coverage.topics` | Topics this workspace covers |
 | `summary.total` / `shown` | Signals found and signals returned |
 | `summary.by_kind`, `summary.by_tier` | Counts for header tiles |
-| `summary.money_at_stake` | Weekly money by nature: `risk`, `opportunity`, `shift` |
+| `summary.entities_flagged` | Distinct entities with at least one signal |
+| `summary.money_at_stake` | Weekly money by nature: `risk`, `opportunity`, `shift`. Each entity counts once per nature, by its largest signal, so do not re-add `signals[].money_at_stake` |
 | `signals[]` | Ranked by `money_at_stake`, largest first |
 | `next` | What to call next |
 
