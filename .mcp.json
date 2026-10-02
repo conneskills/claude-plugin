@@ -19,6 +19,10 @@
     "conneskills-planning": {
       "type": "http",
       "url": "https://app.conneskills.com/api/mcp/planning"
+    },
+    "conneskills-insights": {
+      "type": "http",
+      "url": "https://app.conneskills.com/api/mcp/insights"
     }
   }
 }

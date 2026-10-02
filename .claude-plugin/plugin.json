@@ -1,8 +1,8 @@
 {
   "name": "conneskills",
   "displayName": "Conneskills",
-  "version": "2.0.1",
-  "description": "Connect Claude to governed company knowledge, live connector data, code intelligence, memory, and planning through Conneskills.",
+  "version": "2.1.0",
+  "description": "Connect Claude to governed company knowledge, live connector data, code intelligence, memory, planning, and the signals radar through Conneskills.",
   "author": {
     "name": "Conneskills",
     "url": "https://conneskills.com"
@@ -16,7 +16,8 @@
     "connectors",
     "code-intelligence",
     "memory",
-    "planning"
+    "planning",
+    "insights"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json"

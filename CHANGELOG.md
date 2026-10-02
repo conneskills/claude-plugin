@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.1.0
+
+### Nuevo: servidor Insights
+
+`conneskills-insights` (`/api/mcp/insights`) expone el radar de señales: lo que
+la corrida diaria de la plataforma ya calculó sobre los datos del workspace.
+Tres herramientas de intención, sin tablas ni fechas como argumento:
+`insights_brief`, `insights_explain` e `insights_report_outcome`.
+
+- Las señales **certificadas** salen de un playbook firmado y traen la acción
+  que recomienda una decisión publicada. Los hallazgos **descubiertos** salen de
+  una plantilla de análisis, traen su procedencia y no traen acción.
+- La skill indica empezar por `insights_brief` ante cualquier pregunta abierta
+  sobre el negocio, y armar tableros solo con esa respuesta.
+- Es un recurso OAuth nuevo: requiere autorizarlo desde `/mcp`. `insights:read`
+  es opt-in e `insights:outcome` se concede aparte.
+
+Requiere una plataforma que sirva `/api/mcp/insights` (ADR-061). Los otros cinco
+recursos no cambian.
+
 ## 2.0.1
 
 ### Esquema de base de datos determinista

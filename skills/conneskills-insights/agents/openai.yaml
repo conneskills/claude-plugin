@@ -1,0 +1,11 @@
+interface:
+  display_name: "Conneskills Insights"
+  short_description: "Read the radar of risks and opportunities already computed on your data"
+  default_prompt: "Use $conneskills-insights to read the signals radar before answering how the business is doing."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "conneskills-insights"
+      description: "Conneskills signals radar"
+      transport: "streamable_http"
+      url: "https://app.conneskills.com/api/mcp/insights"

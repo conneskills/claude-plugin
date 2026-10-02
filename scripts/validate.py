@@ -23,6 +23,7 @@ EXPECTED_SERVERS = {
     "conneskills-code": "https://app.conneskills.com/api/mcp/code",
     "conneskills-memory": "https://app.conneskills.com/api/mcp/memory",
     "conneskills-planning": "https://app.conneskills.com/api/mcp/planning",
+    "conneskills-insights": "https://app.conneskills.com/api/mcp/insights",
 }
 INDEXED_DATABASE_SCHEMA_TOOLS = {
     "database_list_schemas",
