@@ -1,7 +1,7 @@
 {
   "name": "conneskills",
   "displayName": "Conneskills",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Connect Claude to governed company knowledge, live connector data, code intelligence, memory, planning, and the signals radar through Conneskills.",
   "author": {
     "name": "Conneskills",

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.1.1
+
+### Guía para encender el radar
+
+- La skill de Insights documenta `insights_setup`: cómo un owner o admin
+  enciende la corrida diaria desde el propio servidor, con la plantilla, la
+  conexión y `min_weekly_money`, y qué hacer si `run.status` es
+  `not_configured`. El contrato de la skill cambió de cara al usuario, así que
+  se publica como versión nueva.
+- No cambian las URLs, los scopes ni los otros cinco recursos: no requiere
+  volver a autorizar.
+
 ## 2.1.0
 
 ### Nuevo: servidor Insights
