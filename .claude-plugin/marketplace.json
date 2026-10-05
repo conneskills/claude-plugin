@@ -10,7 +10,7 @@
       "source": "./",
       "displayName": "Conneskills",
       "description": "Governed company knowledge, live connector data, code intelligence, memory, planning, and the signals radar through six OAuth MCP resources.",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "defaultEnabled": true
     }
   ]
