@@ -1,0 +1,33 @@
+name: AI-DLC Evidence
+
+# Enforces the governance policy PRO-378#document-policy: no platform code
+# change merges without AI-DLC evidence. When a pull request touches code
+# paths, its body must reference the AI-DLC workflow/plan (or declare an
+# explicit exemption). Docs/config-only changes pass automatically.
+#
+# The check itself lives in scripts/check-aidlc-evidence.sh so it can be
+# replicated to the other conneskills-platform repos and run locally.
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  aidlc-evidence:
+    name: AI-DLC evidence gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify AI-DLC evidence for code changes
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+        run: |
+          printf '%s' "$PR_BODY" > "$RUNNER_TEMP/pr-body.md"
+          bash scripts/check-aidlc-evidence.sh --body-file "$RUNNER_TEMP/pr-body.md"
