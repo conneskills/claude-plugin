@@ -23,8 +23,10 @@ already ran, deterministically, and two people asking get the same answer.
 2. Read `run.status` before anything else:
    - `fresh` — answer normally.
    - `stale` — answer, and say the radar is out of date, with `run.reason`.
-   - `not_configured` — there is no analysis for this workspace yet. Say so. Do
-     not improvise one with other tools and present it as the radar.
+   - `not_configured` — there is no analysis for this workspace yet. Do not
+     improvise one with other tools and present it as the radar. If the user is
+     a workspace owner or admin, offer to turn it on with `insights_setup`
+     (see below); otherwise say who can.
 3. Lead with what is at stake, not with the list: `summary.money_at_stake` by
    nature (`risk`, `opportunity`, `shift`), then the top signals. They arrive
    already ranked by money.
@@ -34,6 +36,20 @@ already ran, deterministically, and two people asking get the same answer.
    were left out and why.
 5. When the user tells you what happened with a signal, record it with
    `insights_report_outcome`. That is how the radar learns which signals matter.
+
+## Turning the radar on
+
+`insights_setup` is how an owner or admin starts the analysis, from this same
+server. It takes a template (`salud_tiendas`: weekly sales per store, with the
+company's action rule published as a decision), the connected database to read
+and `min_weekly_money` (the weekly sales under which a store is not judged, in
+the table's currency). `connection_id` can be omitted when the workspace has one
+database; the schema, table and column names default to the template's and can
+be overridden. Confirm them first with `database_describe_table` on the
+knowledge server when in doubt. The platform registers the playbook, signs it in
+the caller's name and runs it right away, so `insights_brief` answers with real
+signals a few seconds later. Calling it again with the same definition only
+re-activates it; a different definition creates the next version.
 
 ## Reading a signal
 

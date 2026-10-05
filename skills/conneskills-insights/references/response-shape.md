@@ -7,6 +7,7 @@
 | `insights_brief` | `insights:read` | optional `topic`, `tier`, `limit` | The radar: run status, coverage, ranked signals, summary |
 | `insights_explain` | `insights:read` | `signal_id` | Why one signal fired: rule, thresholds, evidence, exclusions |
 | `insights_report_outcome` | `insights:outcome` | `signal_id`, `outcome`, `request_id`, optional `note` | Confirmation; idempotent by `request_id` |
+| `insights_setup` | `insights:manage` + workspace owner or admin | `template`, `min_weekly_money`; optional `connection_id`, `schema`, `table`, `date_column`, `entity_column`, `money_column`, `run_now` | The playbook and decision now in use, the connection, and the first run (`status`, `signals`, `coverage`) |
 
 `outcome` is one of `confirmed` (it was real), `dismissed` (false alarm),
 `acted` (an action was taken) or `resolved` (the situation is over).
@@ -62,5 +63,7 @@ One envelope: `{ "error": { "code", "message", "retryable" } }`.
 | `topic_not_covered` | The topic does not exist here; the error lists `topics` |
 | `signal_not_found` | No current signal has that id |
 | `signal_expired` | The signal existed and its retention ended |
+| `forbidden` | `insights_setup` called without being a workspace owner or admin, or with a service credential |
+| `setup_failed` | The analysis could not be turned on; when the problem is choosing a database, the error lists `connections` |
 
 A stale run is **not** an error: it is a valid answer marked `stale`.
