@@ -1,0 +1,55 @@
+# claude-plugin — deploy contract (platform/v1)
+#
+# The claude-plugin is a **distributed MCP client** of the conneskills-platform project
+# (arquetipo A · Producto interno, lead Omar). It has NO first-party runtime:
+# its "deployable" is the marketplace package published from this repo plus the
+# hosted MCP surface it consumes. This descriptor pins the distribution ref and
+# the SLO the plugin inherits from the platform's mcp-gateway service
+# (https://app.conneskills.com/api/mcp/*). See docs/runbook.md and
+# services/README.md in conneskills-rag-platform.
+apiVersion: platform/v1
+kind: Service
+metadata:
+  name: claude-plugin
+  owner: omar
+  tier: prod
+spec:
+  artifact:
+    type: source
+    repo: https://github.com/conneskills/claude-plugin
+    ref: main
+  runtime:
+    kind: serverless
+    ports:
+      - name: http
+        containerPort: 443
+    resources:
+      cpu: "50m"
+      memory: "64Mi"
+    health:
+      liveness:
+        path: /api/health
+        port: http
+      readiness:
+        path: /api/health
+        port: http
+  network:
+    routes:
+      - host: app.conneskills.com
+        path: /api/mcp
+        port: http
+        visibility: public
+  providerSelector:
+    # The distribution is source-based (git marketplace); the runtime surface is
+    # the shared MCP gateway behind Caddy/Cloudflare.
+    options: [cloudflare]
+    capabilities: [serverless]
+  deployment:
+    strategy: rolling
+    gates: [validate]
+    promotion: [dev, stage, prod]
+    rollback: automatic
+  slo:
+    availability: 99.9%
+    latencyP95Ms: 800
+    errorBudgetPolicy: freeze-on-burn
